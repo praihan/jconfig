@@ -15,12 +15,12 @@ managers. Have a look at the test cases in the "test" folder.
 
 ## Build
 jconfig uses Apache Ant ([http://ant.apache.org/](http://ant.apache.org/)) for builds. All properties used reside in 
-the text file "<b>ant.properties</b>" and the ant script in "<b>build.xml</b>". <p>
+the text file "<b>ant.properties</b>" and the ant script is "<b>build.xml</b>". <p>
 The simplest way to build is simply running the ant executable in the root project 
 folder, You need to make sure that ant executable is in the Path. 
 See [http://ant.apache.org/manual/install.html](http://ant.apache.org/manual/install.html).
 <p>
-    <i>C:\jconfig\ant<i> will build fine if the root project folder is "<b>C:\jconfig</b>" (Windows example)
+    <i>C:\jconfig\ant</i> will build fine if the root project folder is "<b>C:\jconfig</b>" (Windows example)
 <p>
 The build targets include:<br>
 <ul>
