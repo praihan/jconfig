@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="jconfig" default="build" basedir=".">
+
+    <description>jconfig</description>
+    
+    <target name="build" depends="jar-all" />
+    
+    <target name="init-properties">
+        <property file="ant.properties" />
+    </target>
+    
+    <target name="clean" depends="clean-dist, clean-build" />
+    
+    <target name="clean-dist" depends="init-properties">
+        <delete dir="${dist.dir}" />
+    </target>
+    
+    <target name="clean-build" depends="init-properties">
+        <delete dir="${bin.dir}" />
+    </target>
+    
+    <target name="init" depends="clean-build">
+        <mkdir dir="${bin.dir}" />
+        <mkdir dir="${build.dir}" />
+    </target>
+    
+    <target name="test" depends="compile-test">
+        <echo level="info">Running tests...</echo>
+        <java jvm="java" dir="${test.build.dir}" classname="${test.run.main.class}" fork="true" failonerror="true">
+            <classpath>
+                <pathelement location="${test.build.dir}" />
+                <pathelement location="${build.dir}" />
+            </classpath>
+        </java>
+    </target>
+    
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${build.dir}"
+            classpath="" includeantruntime="false"
+            deprecation="on">
+            <compilerarg value="-Xlint:unchecked" />
+        </javac>
+        <copy todir="${build.dir}" flatten="false" failonerror="yes">
+            <fileset dir="${src.dir}" excludes="**/*.java" />
+        </copy>
+    </target>
+    
+    <target name="jar-all" depends="clean-dist, jar, jar-sources" />
+    
+    <target name="jar" depends="compile">
+        <mkdir dir="${dist.dir}" />
+        <tstamp>
+            <format property="current.time" pattern="dd-MM-yyyy @ HH:mm:ss" />
+        </tstamp>
+        <jar destfile="${dist.jar}">
+            <fileset dir="${build.dir}" />
+            <manifest>
+               <attribute name="Application-Vendor" value="${application.vendor}" />
+               <attribute name="Build-Time" value="${current.time} (DD-MM-YYYY @ hh:mm:ss)" />
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="jar-sources" depends="init-properties">
+        <mkdir dir="${dist.dir}" />
+        <tstamp>
+            <format property="current.time" pattern="dd-MM-yyyy @ HH:mm:ss" />
+        </tstamp>
+        <jar basedir="${src.dir}" jarfile="${dist.jar.src}">
+            <manifest>
+               <attribute name="Application-Vendor" value="${application.vendor}" />
+               <attribute name="Build-Time" value="${current.time} (DD-MM-YYYY @ hh:mm:ss)" />
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="compile-test" depends="compile">
+        <mkdir dir="${test.build.dir}" />
+        <javac srcdir="${test.src.dir}" destdir="${test.build.dir}"
+            classpath="${build.dir}" includeantruntime="false"
+            deprecation="on">
+            <compilerarg value="-Xlint:unchecked" />
+        </javac>
+        <copy todir="${test.build.dir}" flatten="false" failonerror="yes">
+            <fileset dir="${test.src.dir}" excludes="**/*.java" />
+        </copy>
+    </target>
+    
+</project>
