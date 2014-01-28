@@ -497,6 +497,7 @@ abstract strictfp class PrivateConfigBase implements Config {
     
     public boolean containsKey(String key, Repository repository) {
         Contract.nonNull(key);
+        Contract.nonNull(repository);
         switch (repository) {
             case BOOLEAN:
                 return flushedBooleanElements.containsKey(key);
@@ -505,8 +506,7 @@ abstract strictfp class PrivateConfigBase implements Config {
             case NUMBER:
                 return flushedNumberElements.containsKey(key);
             default:
-                // at this point, it must be logically null
-                throw new NullPointerException("category is null");
+                throw new InternalError();
         }
     }
     
